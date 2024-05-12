@@ -1,16 +1,75 @@
-# ERC20 Goerli to Mumbai Bridge Using fxPortal
-This project demonstrates how to use the fxPortal contracts to transfer ERC20 tokens from Goerli to Mumbai.
+# Overview
 
-### Steps for Bridging
+---
+This project involves the creation and deployment of an ERC721A-compliant NFT (Non-Fungible Token)
+contract named CrazyNFT on Sepolia Ethereum testnet then approve and deposit the NFT to Polygon
+Mumbai using their fxPortal bridge. The NFTs represent a a space minion nft, a 5-item collection of different images.
 
-1. Run npm i to install dependencies
-2. Put your private key in the .env.examples file and rename to .env when finished
-3. Run npx hardhat run scripts/deploy.js --network goerli to deploy ERC20 contract
-4. Paste the newly deployed contract address in the tokenAddress variable for the other scripts
-5. Make sure to fill in your public key
-6. Run npx hardhat run scripts/mint.js --network goerli to mint tokens to your wallet
-7. Run npx hardhat run scripts/approveDeposit.js --network goerli to approve and deposit your tokens to polygon
-8. Wait 20-30ish minutes for tokens to show on polygon account
-9. Use polyscan.com to check your account for the tokens. Once they arrive, you can click on the transaction to get the contract address for polygon.
-10. Use this polygon contract address for your getBalance script's tokenAddress
-11. Run npx hardhat run scripts/getBalance.js --network mumbai to see the new polygon balance
+## Getting Started
+
+---
+### Prerequisites
+
+- Install [nvm](http://nvm.sh).
+- Use **Node.js version 16** or higher.
+```shell
+nvm install 16
+nvm use 16
+```
+
+## Project Initialization
+
+---
+```shell
+git clone <this-repo-url>
+```
+```shell
+cd <the-repo>
+```
+```shell
+npm install
+```
+
+## Configuration
+
+---
+### Deploy contract
+First compile the contract using `npx hardhat compile` then deploy the contract onto
+Goerli Ethereum testnet using the following command:
+```shell
+npx hardhat run --network goerli scripts/nft/deploy.js
+```
+
+Then, if everything is set up right, you get a console response like this:
+```
+Crazy NFT deployed to: <CONTRACT-ADDRESS>
+```
+### Batch mint NFTs
+To batch mint NFTs to the deployed contract, update the contract address in the
+`.env.example.` file and rename the file to `.env`. Also, subsequently update
+the required variables in the `.env` file.  
+
+Then run the `batchMint.js` script with this hardhat command:
+```shell
+npx hardhat run --network goerli scripts/nft/batchMint.js
+```
+The response log will look like:
+```
+Successfully minted: <number> Crazy NFTs to <WALLET-ADDRESS>
+```
+### Approve transfer and deposit the NFTs to Polygon bridge
+Pass in the Polygon Mumbai bridged address of your contract to `BRIDGE-ADDRESS` in
+`.env`, then run the `approveTransfer.js` script with hardhat:
+```shell
+npx hardhat run --network goerli scripts/nft/approveTransfer.js
+```
+The response should look like this:
+```
+NFT approval confirmed
+NFT deposited on Polygon Mumbai
+```
+
+
+## Author
+
+Daniel Fadehan
